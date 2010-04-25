@@ -60,12 +60,14 @@ public class PropertyAnnotationAndPlaceholderConfigurer extends PropertyPlacehol
 	protected void loadProperties(Properties props) throws IOException {
 		super.loadProperties(props);
 
-		for(PropertyLoader propertyLoader : propertyLoaders) {
-	        log.info("Loading propertyLoader=[" + propertyLoader + "]");
-	        Properties loaded = propertyLoader.loadProperties();
-			props.putAll(loaded);
-			System.getProperties().putAll(loaded);
-			propertyLoader.registerPropertyListener(this);
+		if(propertyLoaders != null) {
+			for(PropertyLoader propertyLoader : propertyLoaders) {
+		        log.info("Loading propertyLoader=[" + propertyLoader + "]");
+		        Properties loaded = propertyLoader.loadProperties();
+				props.putAll(loaded);
+				System.getProperties().putAll(loaded);
+				propertyLoader.registerPropertyListener(this);
+			}
 		}
 	}
 

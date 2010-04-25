@@ -1,8 +1,8 @@
 package com.byluroid.spring.beans.factory.config.annotations;
 
-import java.util.Properties;
+import static junit.framework.Assert.*;
 
-import junit.framework.Assert;
+import java.util.Properties;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,8 +44,8 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 
 		configurer.processProperties(beanFactory, properties);
 
-		Assert.assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
-		Assert.assertEquals(TEST_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
+		assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
+		assertEquals(TEST_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
 	}
 
 	@Test
@@ -56,8 +56,8 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 
 		configurer.processProperties(beanFactory, properties);
 
-		Assert.assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
-		Assert.assertEquals(TEST_DEFAULT_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
+		assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
+		assertEquals(TEST_DEFAULT_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
 	}
 
 	@Test
@@ -70,8 +70,8 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 
 		configurer.processProperties(beanFactory, properties);
 
-		Assert.assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
-		Assert.assertEquals(TEST_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
+		assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
+		assertEquals(TEST_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
 	}
 
 	@Test
@@ -82,10 +82,10 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 
 		configurer.processProperties(beanFactory, properties);
 
-		Assert.assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
-		Assert.assertEquals(TEST_DEFAULT_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
+		assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
+		assertEquals(TEST_DEFAULT_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
 	}
-	
+
 	@Test
 	public void testProcessPropertiesWithinBasePackage() {
 		configurer.setBasePackage("com.byluroid");
@@ -97,8 +97,8 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 
 		configurer.processProperties(beanFactory, properties);
 
-		Assert.assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
-		Assert.assertEquals(TEST_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
+		assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
+		assertEquals(TEST_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 
 		configurer.processProperties(beanFactory, properties);
 
-		Assert.assertTrue(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().isEmpty());
+		assertTrue(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().isEmpty());
 	}
 	
 	@Test
@@ -125,8 +125,8 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 
 		configurer.processProperties(beanFactory, properties);
 
-		Assert.assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
-		Assert.assertEquals(TEST_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
+		assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
+		assertEquals(TEST_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
 	}	
 	
 	@Test
@@ -143,7 +143,7 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 			return;
 		}
 
-		Assert.fail("Should throw BeanConfigurationException on no property setter.");
+		fail("Should throw BeanConfigurationException on no property setter.");
 	}
 	
 	@Test
@@ -160,7 +160,7 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 			return;
 		}
 
-		Assert.fail("Should throw BeanConfigurationException on no property setter.");
+		fail("Should throw BeanConfigurationException on no property setter.");
 	}
 
 	@Test
@@ -175,7 +175,7 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 			return;
 		}
 
-		Assert.fail("Should throw BeanConfigurationException on empty property value.");
+		fail("Should throw BeanConfigurationException on empty property value.");
 	}
 
 	@Test
@@ -198,7 +198,7 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 		configurer.setBeanFactory(beanFactory);
 		configurer.propertyChanged(new PropertyEvent(this, TEST_KEY, TEST_CHANGED_VALUE));
 
-		Assert.assertEquals(TEST_CHANGED_VALUE, ((UpdateableTestBean) context.getBean(TEST_BEAN_NAME)).getProperty());
+		assertEquals(TEST_CHANGED_VALUE, ((UpdateableTestBean) context.getBean(TEST_BEAN_NAME)).getProperty());
 	}
 
 	@Test
@@ -221,6 +221,16 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 		configurer.setBeanFactory(beanFactory);
 		configurer.propertyChanged(new PropertyEvent(this, TEST_KEY, "2"));
 
-		Assert.assertEquals(2, ((ConvertableTestBean) context.getBean(TEST_BEAN_NAME)).getProperty());
+		assertEquals(2, ((ConvertableTestBean) context.getBean(TEST_BEAN_NAME)).getProperty());
+	}
+
+
+	@Test
+	public void testProcessPropertiesWithoutPropertyLoaders() throws Exception {
+		try {
+			configurer.loadProperties(properties);
+		} catch(NullPointerException e) {
+			fail("loadProperties failing on null property loaders.");
+		}
 	}
 }
