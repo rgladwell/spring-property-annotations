@@ -16,6 +16,26 @@
 		<developerConnection>scm:hg:https://spring-property-annotations.googlecode.com/hg/</developerConnection>
 		<url>http://code.google.com/p/spring-property-annotations/source/browse/</url>
 	</scm>
+	<developers>
+		<developer>
+			<id>ricardo</id>
+			<name>Ricardo Gladwell</name>
+			<email>ricardo.gladwell@gmail.com</email>
+			<url>http://www.google.com/profiles/ricardo.gladwell</url>
+		</developer>
+	</developers>
+	<distributionManagement>
+		<repository>
+			<id>gladwell-nexus</id>
+			<name>Byluroid Internal Releases</name>
+			<url>http://gladwell.selfip.com/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>gladwell-nexus</id>
+			<name>Byluroid Internal Snapshots</name>
+			<url>http://gladwell.selfip.com/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 	<build>
 		<plugins>
 			<plugin>
