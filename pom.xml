@@ -16,6 +16,7 @@
 		<developerConnection>scm:hg:file:///${basedir}</developerConnection>
 		<url>http://code.google.com/p/spring-property-annotations/source/browse/</url>
 	</scm>
+	<inceptionYear>2010</inceptionYear>
 	<developers>
 		<developer>
 			<id>ricardo</id>
@@ -36,6 +37,16 @@
 			<url>http://gladwell.selfip.com/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
+	<organization>
+		<name>Urban Mania</name>
+		<url>urbanmania.com</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
 	<build>
 		<plugins>
 			<plugin>
