@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package com.byluroid.spring.beans.factory.config.annotations;
+package com.urbanmania.spring.beans.factory.config.annotations;
+
+import com.urbanmania.spring.beans.factory.config.annotations.Property;
 
 /**
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  */
-public class AnnotatedFieldTestBean {
+public class DefaultValueTestBean {
 
-	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY, defaultValue=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_DEFAULT_VALUE)
 	String property;
 
 	public String getProperty() {
 		return property;
 	}
 
+	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY, defaultValue=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_DEFAULT_VALUE)
 	public void setProperty(String property) {
 		this.property = property;
 	}

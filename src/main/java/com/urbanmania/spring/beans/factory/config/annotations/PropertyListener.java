@@ -14,28 +14,15 @@
  * limitations under the License.
  */
 
-package com.byluroid.spring.beans.factory.config.annotations;
+package com.urbanmania.spring.beans.factory.config.annotations;
 
-import java.util.Properties;
+import java.util.EventListener;
 
 /**
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  */
-public class MockPropertyLoader implements PropertyLoader {
+public interface PropertyListener extends EventListener {
 
-	Properties properties;
-	PropertyListener listener;
-
-	public MockPropertyLoader(Properties properties) {
-		this.properties = properties;
-	}
-
-	public Properties loadProperties() {
-		return properties;
-	}
-
-	public void registerPropertyListener(PropertyListener listener) {
-		this.listener = listener;
-	}
+	void propertyChanged(PropertyEvent event);
 
 }

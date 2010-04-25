@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.byluroid.spring.beans.factory.config.annotations;
+package com.urbanmania.spring.beans.factory.config.annotations;
 
 import java.beans.PropertyDescriptor;
 import java.io.IOException;

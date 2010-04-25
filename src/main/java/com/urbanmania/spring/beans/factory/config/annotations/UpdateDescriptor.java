@@ -14,22 +14,32 @@
  * limitations under the License.
  */
 
-package com.byluroid.spring.beans.factory.config.annotations;
+package com.urbanmania.spring.beans.factory.config.annotations;
+
+import java.beans.PropertyDescriptor;
 
 /**
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  */
-public class UpdateableTestBean {
+public class UpdateDescriptor {
 
-	String property;
+	PropertyDescriptor propertyDescriptor;
+	Class<?> beanClass;
 
-	public String getProperty() {
-		return property;
+	public PropertyDescriptor getPropertyDescriptor() {
+		return propertyDescriptor;
 	}
 
-	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY, update=true)
-	public void setProperty(String property) {
-		this.property = property;
+	public void setPropertyDescriptor(PropertyDescriptor propertyDescriptor) {
+		this.propertyDescriptor = propertyDescriptor;
+	}
+
+	public Class<?> getBeanClass() {
+		return beanClass;
+	}
+
+	public void setBeanClass(Class<?> beanClass) {
+		this.beanClass = beanClass;
 	}
 
 }

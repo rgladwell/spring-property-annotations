@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package com.byluroid.spring.beans.factory.config.annotations;
+package com.urbanmania.spring.beans.factory.config.annotations;
 
 /**
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  */
-public class DefaultValueTestBean {
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.lang.annotation.ElementType;
 
-	String property;
+/**
+ * @author ricardo
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD, ElementType.FIELD})
+public @interface Property {
 
-	public String getProperty() {
-		return property;
-	}
-
-	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY, defaultValue=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_DEFAULT_VALUE)
-	public void setProperty(String property) {
-		this.property = property;
-	}
+    String key();
+    String defaultValue() default "";
+    boolean update() default false;
 
 }

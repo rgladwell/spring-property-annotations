@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-package com.byluroid.spring.beans.factory.config.annotations;
+package com.urbanmania.spring.beans.factory.config.annotations;
+
+import com.urbanmania.spring.beans.factory.config.annotations.Property;
 
 /**
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  */
-public class AnnotatedGetterTestBean {
+public class AnnotatedGetterWithNoSetterTestBean {
 
 	String property;
 
 	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY, defaultValue=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_DEFAULT_VALUE)
 	public String getProperty() {
 		return property;
-	}
-
-	public void setProperty(String property) {
-		this.property = property;
 	}
 
 }

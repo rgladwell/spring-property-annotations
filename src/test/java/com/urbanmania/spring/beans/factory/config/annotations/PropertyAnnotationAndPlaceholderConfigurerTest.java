@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.byluroid.spring.beans.factory.config.annotations;
+package com.urbanmania.spring.beans.factory.config.annotations;
 
 import static junit.framework.Assert.*;
 
@@ -25,6 +25,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.support.StaticApplicationContext;
+
+import com.urbanmania.spring.beans.factory.config.annotations.BeanConfigurationException;
+import com.urbanmania.spring.beans.factory.config.annotations.PropertyAnnotationAndPlaceholderConfigurer;
+import com.urbanmania.spring.beans.factory.config.annotations.PropertyEvent;
 
 /**
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
@@ -107,7 +111,7 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 
 	@Test
 	public void testProcessPropertiesWithinBasePackage() {
-		configurer.setBasePackage("com.byluroid");
+		configurer.setBasePackage("com.urbanmania");
 		GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
 		beanDefinition.setBeanClass(SimplePropetyAnnotatedBean.class);
 		beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);

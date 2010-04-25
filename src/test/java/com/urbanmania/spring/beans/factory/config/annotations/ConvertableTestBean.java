@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-package com.byluroid.spring.beans.factory.config.annotations;
+package com.urbanmania.spring.beans.factory.config.annotations;
+
+import com.urbanmania.spring.beans.factory.config.annotations.Property;
 
 /**
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  */
-public class SimplePropetyAnnotatedBean {
+public class ConvertableTestBean {
 
-	String property;
+	int property;
 
-	public String getProperty() {
+	public int getProperty() {
 		return property;
 	}
 
-	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY)
-	public void setProperty(String property) {
+	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY, update=true)
+	public void setProperty(int property) {
 		this.property = property;
 	}
 

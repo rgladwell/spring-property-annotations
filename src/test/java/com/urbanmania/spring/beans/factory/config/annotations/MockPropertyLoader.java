@@ -14,16 +14,31 @@
  * limitations under the License.
  */
 
-package com.byluroid.spring.beans.factory.config.annotations;
+package com.urbanmania.spring.beans.factory.config.annotations;
 
 import java.util.Properties;
+
+import com.urbanmania.spring.beans.factory.config.annotations.PropertyListener;
+import com.urbanmania.spring.beans.factory.config.annotations.PropertyLoader;
 
 /**
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  */
-public interface PropertyLoader {
+public class MockPropertyLoader implements PropertyLoader {
 
-	public Properties loadProperties();
-	public void registerPropertyListener(PropertyListener listener);
+	Properties properties;
+	PropertyListener listener;
+
+	public MockPropertyLoader(Properties properties) {
+		this.properties = properties;
+	}
+
+	public Properties loadProperties() {
+		return properties;
+	}
+
+	public void registerPropertyListener(PropertyListener listener) {
+		this.listener = listener;
+	}
 
 }

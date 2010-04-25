@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-package com.byluroid.spring.beans.factory.config.annotations;
+package com.urbanmania.spring.beans.factory.config.annotations;
+
+import java.util.Properties;
 
 /**
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  */
-public class ConvertableTestBean {
+public interface PropertyLoader {
 
-	int property;
-
-	public int getProperty() {
-		return property;
-	}
-
-	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY, update=true)
-	public void setProperty(int property) {
-		this.property = property;
-	}
+	public Properties loadProperties();
+	public void registerPropertyListener(PropertyListener listener);
 
 }
