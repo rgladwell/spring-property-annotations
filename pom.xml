@@ -11,6 +11,11 @@
 		<system>Google Code</system>
 		<url>http://code.google.com/p/spring-property-annotations/issues/list</url>
 	</issueManagement>
+	<scm>
+		<connection>scm:hg:https://spring-property-annotations.googlecode.com/hg/</connection>
+		<developerConnection>scm:hg:https://spring-property-annotations.googlecode.com/hg/</developerConnection>
+		<url>http://code.google.com/p/spring-property-annotations/source/browse/</url>
+	</scm>
 	<build>
 		<plugins>
 			<plugin>
