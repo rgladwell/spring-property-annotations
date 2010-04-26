@@ -27,14 +27,14 @@
 	</developers>
 	<distributionManagement>
 		<repository>
-			<id>gladwell-nexus</id>
-			<name>Byluroid Internal Releases</name>
-			<url>http://gladwell.selfip.com/nexus/content/repositories/releases/</url>
+			<id>oss-sonatype</id>
+			<name>Sonatype OSS Releases</name>
+			<url>http://oss.sonatype.org/service/local/staging/deploy/maven2</url>
 		</repository>
 		<snapshotRepository>
-			<id>gladwell-nexus</id>
-			<name>Byluroid Internal Snapshots</name>
-			<url>http://gladwell.selfip.com/nexus/content/repositories/snapshots/</url>
+			<id>oss-sonatype</id>
+			<name>Sonatype OSS Snapshots</name>
+			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
 	<organization>
