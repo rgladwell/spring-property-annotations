@@ -29,7 +29,7 @@ public class UpdateableTestBean {
 		return property;
 	}
 
-	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY, update=true)
+	@Property(key=PropertyAnnotationConfigurerTest.TEST_KEY, update=true)
 	public void setProperty(String property) {
 		this.property = property;
 	}

@@ -23,7 +23,7 @@ import com.urbanmania.spring.beans.factory.config.annotations.Property;
  */
 public class AnnotatedFieldTestBean {
 
-	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY, defaultValue=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_DEFAULT_VALUE)
+	@Property(key=PropertyAnnotationConfigurerTest.TEST_KEY, defaultValue=PropertyAnnotationConfigurerTest.TEST_DEFAULT_VALUE)
 	String property;
 
 	public String getProperty() {

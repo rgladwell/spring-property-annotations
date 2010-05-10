@@ -44,6 +44,7 @@ import org.springframework.context.ApplicationContextAware;
 /**
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  */
+@Deprecated
 public class PropertyAnnotationAndPlaceholderConfigurer extends PropertyPlaceholderConfigurer implements PropertyListener, ApplicationContextAware, BeanFactoryAware {
 
 	private static final Logger log = Logger.getLogger(PropertyAnnotationAndPlaceholderConfigurer.class.getName());

@@ -26,14 +26,10 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.support.StaticApplicationContext;
 
-import com.urbanmania.spring.beans.factory.config.annotations.BeanConfigurationException;
-import com.urbanmania.spring.beans.factory.config.annotations.PropertyAnnotationAndPlaceholderConfigurer;
-import com.urbanmania.spring.beans.factory.config.annotations.PropertyEvent;
-
 /**
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  */
-public class PropertyAnnotationAndPlaceholderConfigurerTest {
+public class PropertyAnnotationConfigurerTest {
 
 	public static final String TEST_BEAN_NAME = "testBean";
 	public static final String TEST_KEY = "testKey";
@@ -41,13 +37,13 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 	public static final String TEST_DEFAULT_VALUE = "testDefaultValue";
 	public static final String TEST_CHANGED_VALUE = "testChangedValue";
 
-	PropertyAnnotationAndPlaceholderConfigurer configurer;
+	PropertyAnnotationConfigurer configurer;
 	DefaultListableBeanFactory beanFactory;
 	Properties properties;
 
 	@Before
 	public void setUp() {
-		configurer = new PropertyAnnotationAndPlaceholderConfigurer();
+		configurer = new PropertyAnnotationConfigurer();
 		beanFactory = new DefaultListableBeanFactory();
 		properties = new Properties();
 	}

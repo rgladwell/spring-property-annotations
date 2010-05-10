@@ -29,7 +29,7 @@ public class SimplePropetyAnnotatedBean {
 		return property;
 	}
 
-	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY)
+	@Property(key=PropertyAnnotationConfigurerTest.TEST_KEY)
 	public void setProperty(String property) {
 		this.property = property;
 	}
