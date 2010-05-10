@@ -121,7 +121,7 @@ public class PropertyAnnotationConfigurer extends PropertyResourceConfigurer imp
 
     private void setProperty(Properties properties, String name, MutablePropertyValues mpv, Class<?> clazz, PropertyDescriptor property, Property annotation) {
         String value = properties.getProperty(annotation.key());
-        
+
         if (StringUtils.isEmpty(value)) {
             value = annotation.defaultValue();
         }
@@ -129,7 +129,7 @@ public class PropertyAnnotationConfigurer extends PropertyResourceConfigurer imp
         if (StringUtils.isEmpty(value)) {
             throw new BeanConfigurationException("No such property=[" + annotation.key() + "] found in properties.");
         }
-        
+
         log.info("setting property=[" + clazz.getName() + "." + property.getName() + "] value=[" + annotation.key() + "=" + value + "]");
 
         mpv.addPropertyValue(property.getName(), value);
