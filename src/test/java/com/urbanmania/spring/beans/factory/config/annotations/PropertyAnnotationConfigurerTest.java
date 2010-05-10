@@ -252,4 +252,23 @@ public class PropertyAnnotationConfigurerTest {
 			fail("loadProperties failing on null property loaders.");
 		}
 	}
+
+	   
+    @Test
+    public void testProcessPropertiesWithAnnotatedFieldOnly() {
+        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+        beanDefinition.setBeanClass(FieldOnlyTestBean.class);
+        beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
+
+        properties.put(TEST_KEY, TEST_VALUE);
+
+        try {
+            configurer.processProperties(beanFactory, properties);
+        } catch(BeanConfigurationException e) {
+            return;
+        }
+
+        fail("Should throw BeanConfigurationException on no property setter.");
+    }
+
 }
