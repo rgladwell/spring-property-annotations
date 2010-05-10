@@ -253,7 +253,6 @@ public class PropertyAnnotationConfigurerTest {
 		}
 	}
 
-	   
     @Test
     public void testProcessPropertiesWithAnnotatedFieldOnly() {
         GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
