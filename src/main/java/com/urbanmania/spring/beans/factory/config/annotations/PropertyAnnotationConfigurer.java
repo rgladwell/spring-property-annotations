@@ -103,7 +103,7 @@ public class PropertyAnnotationConfigurer extends PropertyResourceConfigurer imp
                         Property annotation = field.getAnnotation(Property.class);
                         PropertyDescriptor property = BeanUtils.getPropertyDescriptor(clazz, field.getName());
 
-                        if (property.getWriteMethod() == null) {
+                        if (property == null || property.getWriteMethod() == null) {
                             throwBeanConfigurationException(clazz, field.getName());
                         }
 
