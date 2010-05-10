@@ -43,6 +43,7 @@ import org.springframework.context.ApplicationContextAware;
 
 /**
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
+ * @see com.urbanmania.spring.beans.factory.config.annotations.PropertyAnnotationConfigurer
  */
 @Deprecated
 public class PropertyAnnotationAndPlaceholderConfigurer extends PropertyPlaceholderConfigurer implements PropertyListener, ApplicationContextAware, BeanFactoryAware {
