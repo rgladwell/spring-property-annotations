@@ -31,8 +31,13 @@ import java.lang.annotation.ElementType;
 @Target({ElementType.METHOD, ElementType.FIELD})
 public @interface Property {
 
+    String value() default "";
+
     String key();
+
+    @Deprecated
     String defaultValue() default "";
+
     boolean update() default false;
 
 }
