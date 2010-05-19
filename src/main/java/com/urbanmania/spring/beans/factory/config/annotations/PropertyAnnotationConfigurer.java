@@ -1,6 +1,7 @@
 package com.urbanmania.spring.beans.factory.config.annotations;
 
 import java.beans.PropertyDescriptor;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -23,7 +24,10 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.PropertyResourceConfigurer;
 import org.springframework.context.ApplicationContext;
- 
+
+/**
+ * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
+ */
 public class PropertyAnnotationConfigurer extends PropertyResourceConfigurer implements PropertyListener, BeanFactoryAware {
 
     private static final Logger log = Logger.getLogger(PropertyAnnotationConfigurer.class.getName());
