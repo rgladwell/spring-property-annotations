@@ -123,6 +123,10 @@ public class PropertyAnnotationConfigurer extends PropertyResourceConfigurer imp
         String value = properties.getProperty(annotation.key());
 
         if (StringUtils.isEmpty(value)) {
+            value = annotation.value();
+        }
+
+        if (StringUtils.isEmpty(value)) {
             value = annotation.defaultValue();
         }
 
