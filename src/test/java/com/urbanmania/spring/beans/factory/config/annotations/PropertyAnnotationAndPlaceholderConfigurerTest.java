@@ -18,6 +18,7 @@ package com.urbanmania.spring.beans.factory.config.annotations;
 
 import static junit.framework.Assert.*;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import org.junit.Before;
@@ -292,6 +293,32 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 
         assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
         assertEquals("testValue-testValue", beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
+    }
+
+    @Test
+    public void testProcessEmptyStringProperty() {
+        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+        beanDefinition.setBeanClass(SimplePropetyAnnotatedBean.class);
+        beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
+
+        properties.put(TEST_KEY, "");
+
+        configurer.processProperties(beanFactory, properties);
+
+        assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
+        assertEquals("", beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
+    }
+
+    @Test
+    public void testEmptyStringValue() throws Exception {
+        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+        beanDefinition.setBeanClass(EmptyStringValueTestBean.class);
+        beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
+
+        configurer.processProperties(beanFactory, properties);
+
+        assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
+        assertEquals("", beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
     }
 
 }
