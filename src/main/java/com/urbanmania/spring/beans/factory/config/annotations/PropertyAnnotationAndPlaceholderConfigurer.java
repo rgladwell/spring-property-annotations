@@ -83,7 +83,6 @@ public class PropertyAnnotationAndPlaceholderConfigurer extends PropertyPlacehol
 		        log.info("Loading propertyLoader=[" + propertyLoader + "]");
 		        Properties loaded = propertyLoader.loadProperties();
 				props.putAll(loaded);
-				System.getProperties().putAll(loaded);
 				propertyLoader.registerPropertyListener(this);
 			}
 		}
