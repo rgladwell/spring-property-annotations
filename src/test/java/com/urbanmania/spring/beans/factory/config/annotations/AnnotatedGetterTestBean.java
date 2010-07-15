@@ -25,7 +25,7 @@ public class AnnotatedGetterTestBean {
 
 	String property;
 
-	@Property(key=PropertyAnnotationConfigurerTest.TEST_KEY, value=PropertyAnnotationConfigurerTest.TEST_DEFAULT_VALUE)
+	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY, value=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_DEFAULT_VALUE)
 	public String getProperty() {
 		return property;
 	}

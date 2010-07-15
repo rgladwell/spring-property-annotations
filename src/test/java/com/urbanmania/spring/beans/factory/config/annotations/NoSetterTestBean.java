@@ -23,7 +23,7 @@ import com.urbanmania.spring.beans.factory.config.annotations.Property;
  */
 public class NoSetterTestBean {
 
-	@Property(key=PropertyAnnotationConfigurerTest.TEST_KEY)
+	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY)
 	String property;
 
 	public String getProperty() {
