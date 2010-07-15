@@ -231,6 +231,7 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 		configurer.propertyChanged(new PropertyEvent(this, TEST_KEY, TEST_CHANGED_VALUE));
 
 		assertEquals(TEST_CHANGED_VALUE, ((UpdateableTestBean) context.getBean(TEST_BEAN_NAME)).getProperty());
+        assertNull(System.getProperties().get(TEST_KEY));
 	}
 
 	@Test
@@ -254,6 +255,7 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 		configurer.propertyChanged(new PropertyEvent(this, TEST_KEY, "2"));
 
 		assertEquals(2, ((ConvertableTestBean) context.getBean(TEST_BEAN_NAME)).getProperty());
+		assertNull(System.getProperties().get(TEST_KEY));
 	}
 
 	@Test
