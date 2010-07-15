@@ -29,7 +29,7 @@ public class DefaultValueTestBean {
 		return property;
 	}
 
-	@Property(key=PropertyAnnotationConfigurerTest.TEST_KEY, value=PropertyAnnotationConfigurerTest.TEST_DEFAULT_VALUE)
+	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY, defaultValue=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_DEFAULT_VALUE)
 	public void setProperty(String property) {
 		this.property = property;
 	}

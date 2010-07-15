@@ -29,7 +29,7 @@ public class ConvertableTestBean {
 		return property;
 	}
 
-	@Property(key=PropertyAnnotationConfigurerTest.TEST_KEY, update=true)
+	@Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY, update=true)
 	public void setProperty(int property) {
 		this.property = property;
 	}

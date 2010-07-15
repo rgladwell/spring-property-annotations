@@ -29,7 +29,7 @@ import org.springframework.context.support.StaticApplicationContext;
 /**
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  */
-public class PropertyAnnotationConfigurerTest {
+public class PropertyAnnotationAndPlaceholderConfigurerTest {
 
 	public static final String TEST_BEAN_NAME = "testBean";
 	public static final String TEST_KEY = "testKey";
@@ -37,13 +37,13 @@ public class PropertyAnnotationConfigurerTest {
 	public static final String TEST_DEFAULT_VALUE = "testDefaultValue";
 	public static final String TEST_CHANGED_VALUE = "testChangedValue";
 
-	PropertyAnnotationConfigurer configurer;
+	PropertyAnnotationAndPlaceholderConfigurer configurer;
 	DefaultListableBeanFactory beanFactory;
 	Properties properties;
 
 	@Before
 	public void setUp() {
-		configurer = new PropertyAnnotationConfigurer();
+		configurer = new PropertyAnnotationAndPlaceholderConfigurer();
 		beanFactory = new DefaultListableBeanFactory();
 		properties = new Properties();
 	}
@@ -68,9 +68,9 @@ public class PropertyAnnotationConfigurerTest {
 	}
 
 	@Test
-	public void testProcessPropertiesWithDefaultValue() {
+	public void testProcessPropertiesWithValue() {
 		GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
-		beanDefinition.setBeanClass(DefaultValueTestBean.class);
+		beanDefinition.setBeanClass(ValueTestBean.class);
 		beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
 
 		configurer.processProperties(beanFactory, properties);
@@ -78,6 +78,18 @@ public class PropertyAnnotationConfigurerTest {
 		assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
 		assertEquals(TEST_DEFAULT_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
 	}
+
+    @Test
+    public void testProcessPropertiesWithDefaultValue() {
+        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+        beanDefinition.setBeanClass(DefaultValueTestBean.class);
+        beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
+
+        configurer.processProperties(beanFactory, properties);
+
+        assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
+        assertEquals(TEST_DEFAULT_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
+    }
 
 	@Test
 	public void testProcessPropertiesWithFieldAnnotation() {
@@ -243,7 +255,6 @@ public class PropertyAnnotationConfigurerTest {
 		assertEquals(2, ((ConvertableTestBean) context.getBean(TEST_BEAN_NAME)).getProperty());
 	}
 
-
 	@Test
 	public void testProcessPropertiesWithoutPropertyLoaders() throws Exception {
 		try {
@@ -268,6 +279,19 @@ public class PropertyAnnotationConfigurerTest {
         }
 
         fail("Should throw BeanConfigurationException on no property setter.");
+    }
+
+    @Test
+    public void testPlaceholderSubstitution() {
+        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+        beanDefinition.setBeanClass(PlaceholderValueTestBean.class);
+        beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
+        properties.put(TEST_KEY, TEST_VALUE);
+
+        configurer.processProperties(beanFactory, properties);
+
+        assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
+        assertEquals("testValue-testValue", beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
     }
 
 }

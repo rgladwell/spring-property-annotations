@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,6 @@ import org.springframework.context.ApplicationContextAware;
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  * @see com.urbanmania.spring.beans.factory.config.annotations.PropertyAnnotationConfigurer
  */
-@Deprecated
 public class PropertyAnnotationAndPlaceholderConfigurer extends PropertyPlaceholderConfigurer implements PropertyListener, ApplicationContextAware, BeanFactoryAware {
 
 	private static final Logger log = Logger.getLogger(PropertyAnnotationAndPlaceholderConfigurer.class.getName());
@@ -130,7 +130,7 @@ public class PropertyAnnotationAndPlaceholderConfigurer extends PropertyPlacehol
                         Property annotation = field.getAnnotation(Property.class);
                         PropertyDescriptor property = BeanUtils.getPropertyDescriptor(clazz, field.getName());
 
-                        if (property.getWriteMethod() == null) {
+                        if (property == null || property.getWriteMethod() == null) {
                         	throwBeanConfigurationException(clazz, field.getName());
                         }
 
@@ -149,12 +149,18 @@ public class PropertyAnnotationAndPlaceholderConfigurer extends PropertyPlacehol
 		String value = resolvePlaceholder(annotation.key(), properties, SYSTEM_PROPERTIES_MODE_FALLBACK);
 		
 		if (StringUtils.isEmpty(value)) {
-		    value = annotation.defaultValue();
+		    value = annotation.value();
 		}
+
+        if (StringUtils.isEmpty(value)) {
+            value = annotation.defaultValue();
+        }
 
 		if (StringUtils.isEmpty(value)) {
 		    throw new BeanConfigurationException("No such property=[" + annotation.key() + "] found in properties.");
 		}
+
+		value = parseStringValue(value, properties, new HashSet());
 		
 		log.info("setting property=[" + clazz.getName() + "." + property.getName() + "] value=[" + annotation.key() + "=" + value + "]");
 

@@ -18,7 +18,7 @@ package com.urbanmania.spring.beans.factory.config.annotations;
 
 public class FieldOnlyTestBean {
 
-    @Property(key=PropertyAnnotationConfigurerTest.TEST_KEY)
+    @Property(key=PropertyAnnotationAndPlaceholderConfigurerTest.TEST_KEY)
     String property;
 
 }
