@@ -79,19 +79,6 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 		assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
 		assertEquals(TEST_DEFAULT_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
 	}
-
-    @Test
-    public void testProcessPropertiesWithDefaultValue() {
-        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
-        beanDefinition.setBeanClass(DefaultValueTestBean.class);
-        beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
-
-        configurer.processProperties(beanFactory, properties);
-
-        assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
-        assertEquals(TEST_DEFAULT_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
-    }
-
 	@Test
 	public void testProcessPropertiesWithFieldAnnotation() {
 		GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
@@ -196,21 +183,6 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 	}
 
 	@Test
-	public void testProcessPropertiesWithoutDefaultValue() {
-		GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
-		beanDefinition.setBeanClass(SimplePropetyAnnotatedBean.class);
-		beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
-
-		try {
-			configurer.processProperties(beanFactory, properties);
-		} catch(BeanConfigurationException e) {
-			return;
-		}
-
-		fail("Should throw BeanConfigurationException on empty property value.");
-	}
-
-	@Test
 	public void testProcessPropertiesAndUpdate() throws Exception {
 		configurer.setPropertyLoaders(new MockPropertyLoader[] { new MockPropertyLoader(properties) });
 		
@@ -285,7 +257,7 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
     }
 
     @Test
-    public void testPlaceholderSubstitution() {
+    public void testProcessPropertiesWithPlaceholderSubstitution() {
         GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
         beanDefinition.setBeanClass(PlaceholderValueTestBean.class);
         beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
@@ -298,7 +270,7 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
     }
 
     @Test
-    public void testProcessEmptyStringProperty() {
+    public void testProcessPropertiesWithEmptyStringProperty() {
         GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
         beanDefinition.setBeanClass(SimplePropetyAnnotatedBean.class);
         beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
@@ -312,7 +284,7 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
     }
 
     @Test
-    public void testEmptyStringValue() throws Exception {
+    public void testProcessPropertiesWithEmptyStringValue() throws Exception {
         GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
         beanDefinition.setBeanClass(EmptyStringValueTestBean.class);
         beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
@@ -321,6 +293,29 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
 
         assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
         assertEquals("", beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
+    }
+
+    @Test
+    public void testProcessPropertiesWithEmptyStringValueForNonStringValue() throws Exception {
+        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+        beanDefinition.setBeanClass(EmptyStringValueForNonStringPropertyTestBean.class);
+        beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
+
+        configurer.processProperties(beanFactory, properties);
+        
+        StaticApplicationContext context = new StaticApplicationContext();
+        context.registerSingleton(TEST_BEAN_NAME, ConvertableTestBean.class);
+        configurer.setApplicationContext(context);
+        configurer.setBeanFactory(beanFactory);
+        configurer.propertyChanged(new PropertyEvent(this, TEST_KEY, "2"));
+
+        try {
+            EmptyStringValueForNonStringPropertyTestBean bean = (EmptyStringValueForNonStringPropertyTestBean) context.getBean(TEST_BEAN_NAME);
+        } catch(ClassCastException e) {
+            return;
+        }
+        
+        fail("should have thrown ClassCastException converting empty string to integer value.");
     }
 
 }

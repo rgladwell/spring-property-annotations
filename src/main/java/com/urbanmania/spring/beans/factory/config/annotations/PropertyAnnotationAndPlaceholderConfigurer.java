@@ -146,17 +146,9 @@ public class PropertyAnnotationAndPlaceholderConfigurer extends PropertyPlacehol
 
 	private void setProperty(Properties properties, String name, MutablePropertyValues mpv, Class<?> clazz, PropertyDescriptor property, Property annotation) {
 		String value = resolvePlaceholder(annotation.key(), properties, SYSTEM_PROPERTIES_MODE_FALLBACK);
-		
-		if (StringUtils.isEmpty(value)) {
+
+		if (value == null) {
 		    value = annotation.value();
-		}
-
-        if (StringUtils.isEmpty(value)) {
-            value = annotation.defaultValue();
-        }
-
-		if (StringUtils.isEmpty(value)) {
-		    throw new BeanConfigurationException("No such property=[" + annotation.key() + "] found in properties.");
 		}
 
 		value = parseStringValue(value, properties, new HashSet<String>());
