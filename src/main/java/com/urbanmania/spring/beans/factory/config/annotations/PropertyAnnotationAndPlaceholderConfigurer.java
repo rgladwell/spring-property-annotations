@@ -159,7 +159,7 @@ public class PropertyAnnotationAndPlaceholderConfigurer extends PropertyPlacehol
 		    throw new BeanConfigurationException("No such property=[" + annotation.key() + "] found in properties.");
 		}
 
-		value = parseStringValue(value, properties, new HashSet());
+		value = parseStringValue(value, properties, new HashSet<String>());
 		
 		log.info("setting property=[" + clazz.getName() + "." + property.getName() + "] value=[" + annotation.key() + "=" + value + "]");
 
