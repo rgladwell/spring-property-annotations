@@ -18,7 +18,6 @@ package com.urbanmania.spring.beans.factory.config.annotations;
 
 import static junit.framework.Assert.*;
 
-import java.io.IOException;
 import java.util.Properties;
 
 import org.junit.Before;
@@ -310,7 +309,7 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
         configurer.propertyChanged(new PropertyEvent(this, TEST_KEY, "2"));
 
         try {
-            EmptyStringValueForNonStringPropertyTestBean bean = (EmptyStringValueForNonStringPropertyTestBean) context.getBean(TEST_BEAN_NAME);
+            context.getBean(TEST_BEAN_NAME);
         } catch(ClassCastException e) {
             return;
         }
