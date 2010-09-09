@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,8 +15,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
 public class PropertyFileLoaderTest {
-
-    private static final Logger log = Logger.getLogger(PropertyFileLoaderTest.class.getName());
 
     List<Resource> resources;
     PropertyFileLoader loader;
