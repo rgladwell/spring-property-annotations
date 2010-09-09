@@ -16,6 +16,7 @@
 
 package com.urbanmania.spring.beans.factory.config.annotations;
 
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -23,7 +24,7 @@ import java.util.Properties;
  */
 public interface PropertyLoader {
 
-	public Properties loadProperties();
+	public Properties loadProperties() throws IOException;
 	public void registerPropertyListener(PropertyListener listener);
 
 }
