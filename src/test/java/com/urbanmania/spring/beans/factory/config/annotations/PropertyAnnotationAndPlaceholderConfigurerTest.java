@@ -294,27 +294,4 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
         assertEquals("", beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
     }
 
-    @Test
-    public void testProcessPropertiesWithEmptyStringValueForNonStringValue() throws Exception {
-        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
-        beanDefinition.setBeanClass(EmptyStringValueForNonStringPropertyTestBean.class);
-        beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
-
-        configurer.processProperties(beanFactory, properties);
-        
-        StaticApplicationContext context = new StaticApplicationContext();
-        context.registerSingleton(TEST_BEAN_NAME, ConvertableTestBean.class);
-        configurer.setApplicationContext(context);
-        configurer.setBeanFactory(beanFactory);
-        configurer.propertyChanged(new PropertyEvent(this, TEST_KEY, "2"));
-
-        try {
-            context.getBean(TEST_BEAN_NAME);
-        } catch(ClassCastException e) {
-            return;
-        }
-        
-        fail("should have thrown ClassCastException converting empty string to integer value.");
-    }
-
 }
