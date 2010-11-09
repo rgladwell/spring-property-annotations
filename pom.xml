@@ -12,8 +12,8 @@
 		<url>http://code.google.com/p/spring-property-annotations/issues/list</url>
 	</issueManagement>
 	<scm>
-		<connection>scm:hg:file:///${basedir}</connection>
-		<developerConnection>scm:hg:file:///${basedir}</developerConnection>
+		<connection>scm:hg:https://spring-property-annotations.googlecode.com/hg/</connection>
+		<developerConnection>scm:hg:https://spring-property-annotations.googlecode.com/hg/</developerConnection>
 		<url>http://code.google.com/p/spring-property-annotations/source/browse/</url>
 	</scm>
 	<inceptionYear>2010</inceptionYear>
