@@ -29,7 +29,7 @@ public class PlaceholderValueTestBean {
         return property;
     }
 
-    @Property(key="com.example.random.key", value="${testKey}-${testKey}")
+    @Property(value="${testKey}-${testKey}")
     public void setProperty(String property) {
         this.property = property;
     }
