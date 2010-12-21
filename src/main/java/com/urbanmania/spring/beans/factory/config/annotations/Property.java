@@ -33,7 +33,7 @@ public @interface Property {
 
     String value() default "";
 
-    String key();
+    String key() default "";
 
     @Deprecated
     String defaultValue() default "";
