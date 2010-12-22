@@ -21,6 +21,10 @@
 		<developerConnection>scm:hg:https://spring-property-annotations.googlecode.com/hg/</developerConnection>
 		<url>http://code.google.com/p/spring-property-annotations/source/browse/</url>
 	</scm>
+	<ciManagement>
+		<system>Mike</system>
+		<url>https://build.mikeci.com/history.html?name=spring-property-annotations&amp;_sub=maven+integration+for+andriod</url>
+	</ciManagement>
 	<inceptionYear>2010</inceptionYear>
 	<developers>
 		<developer>
