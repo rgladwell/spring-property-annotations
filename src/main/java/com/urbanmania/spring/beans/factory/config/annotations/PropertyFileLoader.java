@@ -1,6 +1,5 @@
 package com.urbanmania.spring.beans.factory.config.annotations;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +27,7 @@ public class PropertyFileLoader implements PropertyLoader {
     public Properties loadProperties() throws IOException {
         properties = new Properties();
         for(Resource resource : resources) {
-            properties.load(new FileReader(resource.getFile()));
+            properties.load(resource.getInputStream());
         }
         
         for (Resource resource : resources) {
@@ -47,7 +46,7 @@ public class PropertyFileLoader implements PropertyLoader {
             if(log.isLoggable(Level.FINE)) log.fine("checking file=[" + resource.getFile() + ",lastModified="+resource.getFile().lastModified()+"] for updates since=["+lastModified.get(resource.getFilename())+"]");
             if (resource.getFile().lastModified() > lastModified.get(resource.getFilename())) {
                 Properties updatedProperies = new Properties();
-                updatedProperies.load(new FileReader(resource.getFile()));
+                updatedProperies.load(resource.getInputStream());
                 for (Object o : updatedProperies.keySet()) {
                     String key = (String) o;
                     if (!updatedProperies.get(key).equals(properties.get(key))) {
