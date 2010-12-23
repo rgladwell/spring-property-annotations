@@ -47,8 +47,7 @@
 		</snapshotRepository>
 	</distributionManagement>
 	<organization>
-		<name>Urban Mania</name>
-		<url>http://urbanmania.com/</url>
+		<name>Google Code</name>
 	</organization>
 	<licenses>
 		<license>
