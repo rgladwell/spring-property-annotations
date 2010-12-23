@@ -294,4 +294,16 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
         assertEquals("", beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
     }
 
+    @Test
+    public void testPropertyAnnotationWithNoKeyOrValue() throws Exception {
+        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+        beanDefinition.setBeanClass(PropertyWithNoKeyOrValueAnnotationBean.class);
+        beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
+
+        configurer.processProperties(beanFactory, properties);
+
+        assertNotNull(beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property"));
+        assertEquals("", beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
+    }
+
 }
