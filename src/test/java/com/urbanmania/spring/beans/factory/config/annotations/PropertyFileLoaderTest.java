@@ -3,7 +3,7 @@ package com.urbanmania.spring.beans.factory.config.annotations;
 import static junit.framework.Assert.*;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -41,10 +41,10 @@ public class PropertyFileLoaderTest {
     @Test
     public void testCheckResourcesForUpdates() throws Exception {
         File test3 = new File(System.getProperty("java.io.tmpdir")+File.separator+"test3.properties");
-        FileWriter writer = new FileWriter(test3);
+        FileOutputStream output = new FileOutputStream(test3);
         Properties properties = new Properties();
         properties.setProperty("test3", "test3");
-        properties.store(writer, null);
+        properties.store(output, null);
         resources.add(new FileSystemResource(test3));
         loader.loadProperties();
         MockPropertyListener listener = new MockPropertyListener();
@@ -52,7 +52,7 @@ public class PropertyFileLoaderTest {
 
         Thread.sleep(1000);
         properties.setProperty("test3", "updated");
-        properties.store(writer, null);
+        properties.store(output, null);
         loader.checkResourcesForUpdates();
 
         assertNotNull("property changed event not sent", listener.getEvent());
