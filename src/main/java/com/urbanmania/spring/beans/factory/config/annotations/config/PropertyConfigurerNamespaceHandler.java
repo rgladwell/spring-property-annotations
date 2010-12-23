@@ -5,7 +5,7 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 public class PropertyConfigurerNamespaceHandler extends NamespaceHandlerSupport {
 
     public void init() {
-        this.registerBeanDefinitionParser("annotation-driven", new AnnotationDrivenPropertyConfigurerBeanDefinitionParser());
+        this.registerBeanDefinitionParser("property-placeholder-annotations", new PropertyPlaceholderAndAnnotationBeanDefinitionParser());
     }
 
 }
