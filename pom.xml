@@ -7,7 +7,7 @@
 	</parent>
 	<groupId>com.urbanmania</groupId>
 	<artifactId>spring-property-annotations</artifactId>
-	<version>0.1.8</version>
+	<version>0.1.9-SNAPSHOT</version>
 	<name>Spring Property Annotations</name>
 	<description>Extended PropertyPlaceHolderConfigurer that injects configuration properties into your Spring components using annotations.</description>
 	<url>http://code.google.com/p/spring-property-annotations/</url>
