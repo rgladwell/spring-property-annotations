@@ -18,12 +18,12 @@ public class PropertyAnnotatedFactoryBean implements FactoryBean {
     }
 
     public Object getObject() throws Exception {
-        return null;
+        return new SimplePropetyAnnotatedBean();
     }
 
     @SuppressWarnings("rawtypes")
     public Class getObjectType() {
-        return null;
+        return SimplePropetyAnnotatedBean.class;
     }
 
     public boolean isSingleton() {

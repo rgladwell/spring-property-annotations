@@ -35,6 +35,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
@@ -47,7 +48,7 @@ import org.springframework.context.ApplicationContextAware;
  */
 public class PropertyAnnotationAndPlaceholderConfigurer extends PropertyPlaceholderConfigurer implements PropertyListener, ApplicationContextAware, BeanFactoryAware {
 
-	private static final Logger log = Logger.getLogger(PropertyAnnotationAndPlaceholderConfigurer.class.getName());
+    private static final Logger log = Logger.getLogger(PropertyAnnotationAndPlaceholderConfigurer.class.getName());
 
     PropertyLoader[] propertyLoaders;
     String basePackage;
@@ -56,144 +57,157 @@ public class PropertyAnnotationAndPlaceholderConfigurer extends PropertyPlacehol
     Map<String, List<UpdateDescriptor>> updatableProperties = new Hashtable<String, List<UpdateDescriptor>>();
 
     public void setPropertyLoaders(PropertyLoader[] propertyLoaders) {
-		this.propertyLoaders = propertyLoaders;
-	}
+        this.propertyLoaders = propertyLoaders;
+    }
 
-	public void setBasePackage(String basePackage) {
-		this.basePackage = basePackage;
-	}
+    public void setBasePackage(String basePackage) {
+        this.basePackage = basePackage;
+    }
 
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 
-	@Override
-	public void setBeanFactory(BeanFactory beanFactory) {
-		super.setBeanFactory(beanFactory);
-		this.beanFactory = (ConfigurableBeanFactory) beanFactory;
-	}
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) {
+        super.setBeanFactory(beanFactory);
+        this.beanFactory = (ConfigurableBeanFactory) beanFactory;
+    }
 
-	@Override
-	protected void loadProperties(Properties props) throws IOException {
-		super.loadProperties(props);
+    @Override
+    protected void loadProperties(Properties props) throws IOException {
+        super.loadProperties(props);
 
-		if(propertyLoaders != null) {
-			for(PropertyLoader propertyLoader : propertyLoaders) {
-		        log.info("Loading propertyLoader=[" + propertyLoader + "]");
-		        Properties loaded = propertyLoader.loadProperties();
-				props.putAll(loaded);
-				propertyLoader.registerPropertyListener(this);
-			}
-		}
-	}
+        if(propertyLoaders != null) {
+            for(PropertyLoader propertyLoader : propertyLoaders) {
+                log.info("Loading propertyLoader=[" + propertyLoader + "]");
+                Properties loaded = propertyLoader.loadProperties();
+                props.putAll(loaded);
+                propertyLoader.registerPropertyListener(this);
+            }
+        }
+    }
 
-	@Override
+    @Override
     protected void processProperties(ConfigurableListableBeanFactory beanFactory, Properties properties) throws BeansException {
         super.processProperties(beanFactory, properties);
 
         for (String name : beanFactory.getBeanDefinitionNames()) {
             MutablePropertyValues mpv = beanFactory.getBeanDefinition(name).getPropertyValues();
-            Class<?> clazz = beanFactory.getType(name);
 
-            // TODO support proxies
-            if (clazz != null && clazz.getPackage() != null) {
-            	if(basePackage != null && !clazz.getPackage().getName().startsWith(basePackage)) {
-        			continue;
-            	}
-                
-                log.info("Configuring properties for bean=" + name + "[" + clazz + "]");
+            Class<?> clazz;
+            try {
+                clazz = Class.forName(beanFactory.getBeanDefinition(name).getBeanClassName());
+            } catch (ClassNotFoundException e) {
+                throw new BeanConfigurationException("error retrieving bean class", e);
+            }
+            if(FactoryBean.class.isAssignableFrom(clazz)) {
+                processAnnotatedProperties(properties, name, mpv, clazz);
+            }
 
-                for (PropertyDescriptor property : BeanUtils.getPropertyDescriptors(clazz)) {
-                    if (log.isLoggable(Level.FINE)) log.fine("examining property=[" + clazz.getName() + "." + property.getName() + "]");
-                    Method setter = property.getWriteMethod();
-                    Method getter = property.getReadMethod();
-                    Property annotation = null;
-                    if (setter != null && setter.isAnnotationPresent(Property.class)) {
-                        annotation = setter.getAnnotation(Property.class);
-                    }
-                    else if (setter != null && getter != null && getter.isAnnotationPresent(Property.class)) {
-                        annotation = getter.getAnnotation(Property.class);
-                    }
-                    else if(setter == null && getter != null && getter.isAnnotationPresent(Property.class)) {
-                    	throwBeanConfigurationException(clazz, property.getName());
-                    }
-                    if (annotation != null) {
-                        setProperty(properties, name, mpv, clazz, property, annotation);
-                    }
+            clazz = beanFactory.getType(name);
+            processAnnotatedProperties(properties, name, mpv, clazz);
+        }
+    }
+
+    private void processAnnotatedProperties(Properties properties, String name, MutablePropertyValues mpv, Class<?> clazz) {
+        // TODO support proxies
+        if (clazz != null && clazz.getPackage() != null) {
+            if(basePackage != null && !clazz.getPackage().getName().startsWith(basePackage)) {
+                return;
+            }
+
+            log.info("Configuring properties for bean=" + name + "[" + clazz + "]");
+
+            for (PropertyDescriptor property : BeanUtils.getPropertyDescriptors(clazz)) {
+                if (log.isLoggable(Level.FINE)) log.fine("examining property=[" + clazz.getName() + "." + property.getName() + "]");
+                Method setter = property.getWriteMethod();
+                Method getter = property.getReadMethod();
+                Property annotation = null;
+                if (setter != null && setter.isAnnotationPresent(Property.class)) {
+                    annotation = setter.getAnnotation(Property.class);
                 }
+                else if (setter != null && getter != null && getter.isAnnotationPresent(Property.class)) {
+                    annotation = getter.getAnnotation(Property.class);
+                }
+                else if(setter == null && getter != null && getter.isAnnotationPresent(Property.class)) {
+                    throwBeanConfigurationException(clazz, property.getName());
+                }
+                if (annotation != null) {
+                    setProperty(properties, name, mpv, clazz, property, annotation);
+                }
+            }
 
-                for (Field field : clazz.getDeclaredFields()) {
-                    if (log.isLoggable(Level.FINE)) log.fine("examining field=[" + clazz.getName() + "." + field.getName() + "]");
-                    if (field.isAnnotationPresent(Property.class)) {
-                        Property annotation = field.getAnnotation(Property.class);
-                        PropertyDescriptor property = BeanUtils.getPropertyDescriptor(clazz, field.getName());
+            for (Field field : clazz.getDeclaredFields()) {
+                if (log.isLoggable(Level.FINE)) log.fine("examining field=[" + clazz.getName() + "." + field.getName() + "]");
+                if (field.isAnnotationPresent(Property.class)) {
+                    Property annotation = field.getAnnotation(Property.class);
+                    PropertyDescriptor property = BeanUtils.getPropertyDescriptor(clazz, field.getName());
 
-                        if (property == null || property.getWriteMethod() == null) {
-                        	throwBeanConfigurationException(clazz, field.getName());
-                        }
+                    if (property == null || property.getWriteMethod() == null) {
+                        throwBeanConfigurationException(clazz, field.getName());
+                    }
 
-                        setProperty(properties, name, mpv, clazz, property, annotation);
+                    setProperty(properties, name, mpv, clazz, property, annotation);
+                }
+            }
+        }
+    }
+
+    private void throwBeanConfigurationException(Class<?> clazz, String name) {
+        throw new BeanConfigurationException("setter for property=[" + clazz.getName() + "." + name + "] not available.");
+    }
+
+    private void setProperty(Properties properties, String name, MutablePropertyValues mpv, Class<?> clazz, PropertyDescriptor property, Property annotation) {
+        String value = resolvePlaceholder(annotation.key(), properties, SYSTEM_PROPERTIES_MODE_FALLBACK);
+
+        if (value == null) {
+            value = annotation.value();
+        }
+
+        value = parseStringValue(value, properties, new HashSet<String>());
+
+        log.info("setting property=[" + clazz.getName() + "." + property.getName() + "] value=[" + annotation.key() + "=" + value + "]");
+
+        mpv.addPropertyValue(property.getName(), value);
+
+        if(annotation.update()) {
+            registerBeanPropertyForUpdate(clazz, annotation, property);
+        }
+    }
+
+    public void registerBeanPropertyForUpdate(Class<?> beanClass, Property annotation, PropertyDescriptor property) {
+        log.info("watching updates for property=["+property.getPropertyType().getName()+"."+property.getName()+"] key=["+annotation.key()+"]");
+        List<UpdateDescriptor> properties = updatableProperties.get(annotation.key());
+
+        if(properties == null) {
+            properties = new ArrayList<UpdateDescriptor>();
+        }
+
+        UpdateDescriptor descriptor = new UpdateDescriptor();
+        descriptor.setPropertyDescriptor(property);
+        descriptor.setBeanClass(beanClass);
+        properties.add(descriptor);
+        updatableProperties.put(annotation.key(), properties);
+    }
+
+    public void propertyChanged(PropertyEvent event) {
+        if(updatableProperties.get(event.getKey()) != null) {
+            for(UpdateDescriptor update : updatableProperties.get(event.getKey())) {
+                for(Object bean : applicationContext.getBeansOfType(update.getBeanClass()).values()) {
+                    log.info("updating property=["+bean.getClass().getName()+"."+update.getPropertyDescriptor().getName()+"] value=["+event.getValue()+"]");
+                    try {
+                        update.getPropertyDescriptor().getWriteMethod().invoke(bean, this.beanFactory.getTypeConverter().convertIfNecessary(event.getValue(), update.getPropertyDescriptor().getPropertyType()));
+                    } catch (IllegalArgumentException e) {
+                        throw new BeanConfigurationException("Error updating "+bean.getClass().getName()+"."+update.getPropertyDescriptor().getName()+"] value=["+event.getValue()+"]", e);
+                    } catch (IllegalAccessException e) {
+                        throw new BeanConfigurationException("Error updating "+bean.getClass().getName()+"."+update.getPropertyDescriptor().getName()+"] value=["+event.getValue()+"]", e);
+                    } catch (InvocationTargetException e) {
+                        throw new BeanConfigurationException("Error updating "+bean.getClass().getName()+"."+update.getPropertyDescriptor().getName()+"] value=["+event.getValue()+"]", e);
                     }
                 }
             }
         }
     }
 
-	private void throwBeanConfigurationException(Class<?> clazz, String name) {
-		throw new BeanConfigurationException("setter for property=[" + clazz.getName() + "." + name + "] not available.");
-	}
-
-	private void setProperty(Properties properties, String name, MutablePropertyValues mpv, Class<?> clazz, PropertyDescriptor property, Property annotation) {
-		String value = resolvePlaceholder(annotation.key(), properties, SYSTEM_PROPERTIES_MODE_FALLBACK);
-
-		if (value == null) {
-		    value = annotation.value();
-		}
-
-		value = parseStringValue(value, properties, new HashSet<String>());
-		
-		log.info("setting property=[" + clazz.getName() + "." + property.getName() + "] value=[" + annotation.key() + "=" + value + "]");
-
-		mpv.addPropertyValue(property.getName(), value);
-		
-		if(annotation.update()) {
-			registerBeanPropertyForUpdate(clazz, annotation, property);
-		}
-	}
-
-	public void registerBeanPropertyForUpdate(Class<?> beanClass, Property annotation, PropertyDescriptor property) {
-		log.info("watching updates for property=["+property.getPropertyType().getName()+"."+property.getName()+"] key=["+annotation.key()+"]");		
-		List<UpdateDescriptor> properties = updatableProperties.get(annotation.key());
-
-		if(properties == null) {
-			properties = new ArrayList<UpdateDescriptor>();
-		}
-
-		UpdateDescriptor descriptor = new UpdateDescriptor();
-		descriptor.setPropertyDescriptor(property);
-		descriptor.setBeanClass(beanClass);
-		properties.add(descriptor);
-		updatableProperties.put(annotation.key(), properties);
-	}
-
-	public void propertyChanged(PropertyEvent event) {
-		if(updatableProperties.get(event.getKey()) != null) {
-			for(UpdateDescriptor update : updatableProperties.get(event.getKey())) {
-				for(Object bean : applicationContext.getBeansOfType(update.getBeanClass()).values()) {
-					log.info("updating property=["+bean.getClass().getName()+"."+update.getPropertyDescriptor().getName()+"] value=["+event.getValue()+"]");	
-					try {
-						update.getPropertyDescriptor().getWriteMethod().invoke(bean, this.beanFactory.getTypeConverter().convertIfNecessary(event.getValue(), update.getPropertyDescriptor().getPropertyType()));
-					} catch (IllegalArgumentException e) {
-						throw new BeanConfigurationException("Error updating "+bean.getClass().getName()+"."+update.getPropertyDescriptor().getName()+"] value=["+event.getValue()+"]", e);
-					} catch (IllegalAccessException e) {
-						throw new BeanConfigurationException("Error updating "+bean.getClass().getName()+"."+update.getPropertyDescriptor().getName()+"] value=["+event.getValue()+"]", e);
-					} catch (InvocationTargetException e) {
-						throw new BeanConfigurationException("Error updating "+bean.getClass().getName()+"."+update.getPropertyDescriptor().getName()+"] value=["+event.getValue()+"]", e);
-					}
-				}
-			}
-		}
-	}
-
 }
- 

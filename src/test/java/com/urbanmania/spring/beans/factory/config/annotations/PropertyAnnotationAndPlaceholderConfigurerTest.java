@@ -328,4 +328,23 @@ public class PropertyAnnotationAndPlaceholderConfigurerTest {
         assertEquals(TEST_VALUE, beanFactory.getBeanDefinition(TEST_BEAN_NAME).getPropertyValues().getPropertyValue("property").getValue());
     }
 
+    /**
+     * Verify that PropertyAnnotationAndPlaceholderConfigurer is setting annotated properties for objects created by Spring factory beans.
+     * @see http://code.google.com/p/spring-property-annotations/issues/detail?id=6
+     * @throws Exception
+     */
+    @Test
+    public void testPropertyAnnotationWithObjectsCreatedByFactoryBean() throws Exception {
+        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+        beanDefinition.setBeanClass(PropertyAnnotatedFactoryBean.class);
+        beanFactory.registerBeanDefinition(TEST_BEAN_NAME, beanDefinition);
+        properties.put(TEST_KEY, TEST_VALUE);
+
+        configurer.processProperties(beanFactory, properties);
+
+        String beanName = beanFactory.getBeanNamesForType(SimplePropetyAnnotatedBean.class)[0];
+        assertNotNull(beanName);
+        assertEquals(TEST_VALUE, beanFactory.getBeanDefinition(beanName).getPropertyValues().getPropertyValue("property").getValue());
+    }
+
 }
