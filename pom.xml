@@ -22,8 +22,8 @@
 		<url>http://code.google.com/p/spring-property-annotations/source/browse/</url>
 	</scm>
 	<ciManagement>
-		<system>Mike</system>
-		<url>https://build.mikeci.com/history.html?name=spring-property-annotations&amp;_sub=maven+integration+for+andriod</url>
+		<system>Jenkins</system>
+		<url>https://rgladwell.ci.cloudbees.com/job/Spring%20Property%20Annotations/</url>
 	</ciManagement>
 	<inceptionYear>2010</inceptionYear>
 	<developers>
